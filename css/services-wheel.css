@@ -1,0 +1,65 @@
+/* MintiGrow — 3D services wheel (home › #home-services). Additive; reuses the site's existing tokens. */
+.sw{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;margin-top:clamp(4px,1.5vw,18px)}
+
+/* Detail panel (left). Every block has a reserved height so the text swap never shifts the page. */
+.sw-panel{position:relative;z-index:2;min-width:0}
+.sw-panel .kicker{margin-bottom:14px}
+.sw-title{font:800 clamp(38px,4.4vw,60px)/.94 var(--display);letter-spacing:-.065em;color:var(--cream);min-height:1.88em;overflow-wrap:break-word}
+.sw-desc{margin-top:16px;font-size:15px;line-height:1.7;min-height:5.1em;max-width:40ch}
+.sw-panel .chips{min-height:76px;align-content:flex-start;margin-top:6px}
+.sw-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:22px}
+.sw-toggle{padding:12px 18px;font-size:13px}
+.sw-prog{height:2px;margin-top:26px;background:rgba(66,181,165,.16);overflow:hidden}
+.sw-prog i{display:block;height:100%;background:var(--teal-s);transform:scaleX(0);transform-origin:left}
+.sw-panel.is-swap .sw-swap{animation:swIn .75s var(--ease) both}
+.sw-panel.is-swap .sw-swap:nth-child(2){animation-delay:.05s}.sw-panel.is-swap .sw-swap:nth-child(3){animation-delay:.1s}
+@keyframes swIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* Stage (right): perspective camera looking at the giant wheel from its side */
+.sw-view{position:relative;height:clamp(440px,52vw,640px);overflow:clip;perspective:1500px;perspective-origin:30% 50%;
+-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 15%,#000 85%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 15%,#000 85%,transparent 100%)}
+.sw-rig{position:absolute;top:50%;width:0;height:0;transform-style:preserve-3d;transform:rotateY(var(--tilt,-14deg))}
+
+/* Wheel structure — three depth planes behind the cards, rotating together */
+.sw-disc{position:absolute;left:calc(var(--R) * -1);top:calc(var(--R) * -1);width:calc(var(--R) * 2);height:calc(var(--R) * 2);border-radius:50%;pointer-events:none;
+transform:translateZ(var(--z,0px)) rotate(calc(var(--rot,0) * 1deg))}
+.sw-disc--back{--z:-170px;box-shadow:0 0 0 1px rgba(66,181,165,.2),0 0 0 46px rgba(66,181,165,.035),0 0 0 47px rgba(66,181,165,.16),inset 0 0 120px rgba(13,85,82,.18)}
+.sw-disc--back::before{content:"";position:absolute;inset:-46px;border-radius:50%;
+background:repeating-conic-gradient(from 0deg,rgba(66,181,165,.55) 0 .35deg,transparent .35deg 3deg);
+-webkit-mask:radial-gradient(closest-side,transparent calc(100% - 13px),#000 calc(100% - 12px),#000 calc(100% - 2px),transparent calc(100% - 1px));
+mask:radial-gradient(closest-side,transparent calc(100% - 13px),#000 calc(100% - 12px),#000 calc(100% - 2px),transparent calc(100% - 1px))}
+.sw-disc--mid{--z:-85px;box-shadow:0 0 0 1px rgba(66,181,165,.3)}
+.sw-ring{position:absolute;border-radius:50%;border:1px solid rgba(66,181,165,.14)}
+.sw-ring.r1{inset:16%}.sw-ring.r2{inset:36%;border-style:dashed;border-color:rgba(66,181,165,.2)}.sw-ring.r3{inset:60%}
+.sw-spoke{position:absolute;left:50%;top:50%;width:50%;height:1px;transform-origin:0 50%;transform:rotate(calc(var(--n) * var(--step)));
+background:linear-gradient(90deg,rgba(66,181,165,0),rgba(66,181,165,.32) 28%,rgba(66,181,165,.5))}
+.sw-hub{position:absolute;left:-54px;top:-54px;width:108px;height:108px;display:grid;place-content:center;text-align:center;border-radius:50%;
+background:var(--teal-d);border:1px solid var(--teal-s);box-shadow:0 0 70px rgba(66,181,165,.2);transform:translateZ(-60px);font:800 28px var(--display);letter-spacing:-.04em;color:var(--cream)}
+.sw-hub span{font:20px var(--serif);color:var(--teal-s);letter-spacing:0}
+
+/* Cards ride the rim and stay upright (like gondolas). Position/scale/opacity are driven per frame by JS. */
+.sw-card{position:absolute;left:0;top:0;width:var(--cw);height:var(--ch);margin:calc(var(--ch) * -.5) 0 0 calc(var(--cw) * -.5);
+display:flex;flex-direction:column;justify-content:space-between;gap:8px;padding:clamp(14px,1.5vw,20px);text-align:left;color:var(--cream);
+border:1px solid rgba(66,181,165,.16);border-radius:4px 18px 18px 18px;
+background:linear-gradient(145deg,rgba(19,25,22,.97),rgba(7,27,27,.9));
+will-change:transform,opacity;backface-visibility:hidden;cursor:pointer;
+transition:border-color .45s var(--ease),box-shadow .5s var(--ease)}
+.sw-card:hover{border-color:rgba(66,181,165,.5)}
+.sw-card.is-active{border-color:var(--teal-s);box-shadow:0 0 0 1px rgba(66,181,165,.3),0 34px 80px rgba(0,0,0,.45),0 0 70px rgba(66,181,165,.15)}
+.sw-no{font:500 10px/1 var(--mono);letter-spacing:.14em;color:var(--teal-s)}
+.sw-name{display:block;font:800 clamp(20px,2vw,27px)/.98 var(--display);letter-spacing:-.05em;color:rgba(238,233,223,.8);transition:color .4s var(--ease)}
+.sw-card.is-active .sw-name{color:var(--cream)}
+.sw-card:not(.is-active) .sw-blurb{opacity:0}
+.sw-blurb{transition:opacity .5s var(--ease);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.5;color:var(--mute)}
+
+@media(max-width:860px){
+.sw{grid-template-columns:1fr;gap:18px}
+.sw-view{height:410px;perspective-origin:40% 50%}
+.sw-title{font-size:clamp(36px,10vw,52px)}
+.sw-desc{min-height:5.1em}
+.sw-blurb{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+.sw-prog,.sw-toggle{display:none}
+.sw-card,.sw-name{transition:none}
+}

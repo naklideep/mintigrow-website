@@ -1,0 +1,49 @@
+
+/* Additive service-page styling. The original site stylesheet is left unchanged. */
+.service-video-wrap{position:absolute;inset:0;overflow:hidden;z-index:0;background:radial-gradient(ellipse at 52% 42%,rgba(13,85,82,.42),transparent 55%),#070908}
+.service-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.48}
+.service-video-wrap:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,9,8,.82),rgba(7,9,8,.42) 55%,rgba(7,9,8,.72)),linear-gradient(0deg,#070908 0%,transparent 42%,rgba(7,9,8,.2) 100%)}
+.service-hero .in{z-index:1;text-align:left;margin-left:max(var(--gut),calc((100vw - var(--wrap))/2));margin-right:auto;max-width:900px}
+.service-hero .lab{color:var(--teal-s)}
+.service-hero h1{font-size:clamp(48px,8vw,112px);max-width:900px;margin:24px 0; text-align:left}
+.service-hero p{margin:0 0 30px;max-width:620px}
+.service-hero .acts{justify-content:flex-start}
+.service-page-intro{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+.service-video-card{position:relative;aspect-ratio:4/5;max-height:560px;overflow:hidden;border:1px solid rgba(66,181,165,.24);border-radius:4px 22px 22px 22px;background:linear-gradient(145deg,#0b2725,#0d110f)}
+.service-video-card video{width:100%;height:100%;object-fit:cover;display:block}
+.service-video-card:after{content:"SAMPLE WORK / MINTIGROW";position:absolute;left:18px;bottom:18px;font:10px var(--mono);letter-spacing:.12em;color:var(--teal-s);text-shadow:0 2px 12px #000}
+.service-deliverables{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:36px}
+.service-deliverable{min-height:170px;padding:24px;border:1px solid rgba(66,181,165,.18);border-radius:4px 18px 18px 18px;background:linear-gradient(145deg,rgba(19,25,22,.94),rgba(7,27,27,.74))}
+.service-deliverable .n{font:500 12px var(--mono);color:var(--teal-s)}
+.service-deliverable h3{font-size:clamp(22px,2.5vw,30px);margin:24px 0 10px;color:var(--cream)}
+.service-deliverable p{font-size:14px;color:var(--mute)}
+.service-samples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:34px}
+.service-sample{position:relative;aspect-ratio:9/16;overflow:hidden;border:1px solid rgba(66,181,165,.18);border-radius:4px 18px 18px 18px;background:radial-gradient(circle at 50% 40%,rgba(66,181,165,.13),transparent 60%),#0b1715}
+.service-sample video{width:100%;height:100%;object-fit:cover;display:block}
+.service-sample span{position:absolute;left:14px;bottom:14px;padding:7px 10px;background:rgba(7,27,27,.82);border:1px solid rgba(66,181,165,.3);border-radius:99px;color:var(--cream);font:9px var(--mono);letter-spacing:.08em}
+.service-page-nav{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px}
+@media(max-width:860px){.service-page-intro{grid-template-columns:1fr}.service-video-card{max-height:420px}.service-deliverables{grid-template-columns:1fr}.service-samples{grid-template-columns:1fr 1fr}.service-hero .in{margin:0 auto}.service-hero h1{font-size:clamp(46px,12vw,78px)}}
+@media(max-width:520px){.service-samples{grid-template-columns:1fr}.service-sample{aspect-ratio:16/10}}
+
+/* ─── Cinematic layer (additive — rules above are unchanged) ─── */
+/* Full-screen hero on every screen height (style.css caps it at 900px). */
+.service-hero{min-height:100svh}
+/* Heading words are wrapped by service-page.js for the entrance; inline-block keeps line breaks identical. */
+.hero h1 .fx-w{display:inline-block}
+/* Hero video fades in once it has a frame, instead of popping. */
+.service-video{transition:opacity 1.6s var(--ease)}
+.service-video.fx-wait{opacity:0}
+
+/* Honest placeholders for missing video files. Dashed frame, no play icon, no controls: it never looks like a video. */
+.video-slot{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-start;gap:10px;padding:clamp(16px,2vw,24px);overflow:hidden;
+background:repeating-linear-gradient(135deg,rgba(66,181,165,.055) 0 1px,transparent 1px 14px),radial-gradient(circle at 50% 38%,rgba(66,181,165,.1),transparent 62%),#0b1715;
+border:1px dashed rgba(66,181,165,.4);border-radius:inherit;color:var(--cream);text-align:left}
+.video-slot b{font:500 10px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal-s)}
+.video-slot code{display:block;font:500 12px/1.5 var(--mono);color:var(--cream);word-break:break-all;background:rgba(7,27,27,.72);border:1px solid rgba(66,181,165,.26);border-radius:8px;padding:8px 10px}
+.video-slot small{font:12px/1.55 var(--body);color:var(--mute)}
+.service-video-card.has-slot:after{display:none}
+.service-video-missing{position:absolute;z-index:1;right:var(--gut);bottom:100px;text-align:left;max-width:min(440px,calc(100% - var(--gut) * 2));padding:12px 14px;border:1px dashed rgba(66,181,165,.42);border-radius:4px 14px 14px 14px;background:rgba(7,27,27,.78);backdrop-filter:blur(8px)}
+.service-video-missing b{display:block;font:500 10px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal-s);margin-bottom:6px}
+.service-video-missing code{font:500 12px/1.5 var(--mono);color:var(--cream);word-break:break-all}
+.service-video-missing small{display:block;margin-top:6px;font:11px/1.5 var(--body);color:var(--mute)}
+@media(max-width:860px){.service-video-missing{left:var(--gut);right:var(--gut);bottom:84px;max-width:none}}

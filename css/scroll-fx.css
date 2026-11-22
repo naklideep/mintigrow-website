@@ -1,0 +1,31 @@
+/* MintiGrow — cinematic scroll layer (additive).
+   Loaded after style.css. Nothing here restyles an existing element: every rule is keyed to a
+   class/attribute that scroll-fx.js adds at runtime, so with JS off the page renders exactly as before. */
+
+/* Lenis (smooth scroll) base rules — only active once Lenis adds its classes to <html> */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+.lenis.lenis-smooth iframe{pointer-events:none}
+
+/* Motion channel for reveals + parallax.
+   Uses the individual `translate` property, so it composes with the `transform` already used by
+   hover states, keyframe animations and GSAP tweens on the same element instead of fighting them.
+   --in-y = entrance offset (px), --fx-y = scroll parallax offset (px). Neither affects layout. */
+[data-fx]{translate:0 calc((var(--in-y,0) + var(--fx-y,0)) * 1px)}
+
+/* Section hairline that draws across as a section arrives (scrubbed by scroll, reverses on scroll-up) */
+.content-section.fx-line::before{content:"";position:absolute;left:0;top:0;width:100%;height:1px;z-index:1;pointer-events:none;
+background:linear-gradient(90deg,transparent,var(--teal-s) 16%,var(--teal-s) 84%,transparent);
+transform:scaleX(var(--sec-p,0));transform-origin:left center;opacity:.85}
+
+/* Card entrance stagger. Delay is set per-card by JS and cleared when the entrance ends,
+   so hover transitions are never delayed. */
+.reveal-ready.is-visible{transition-delay:calc(var(--rv-i,0) * 90ms)}
+
+@media (prefers-reduced-motion:reduce){
+[data-fx]{translate:none}
+.content-section.fx-line::before{display:none}
+.reveal-ready.is-visible{transition-delay:0s}
+}
